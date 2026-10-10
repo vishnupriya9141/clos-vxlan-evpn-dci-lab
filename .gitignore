@@ -1,0 +1,12 @@
+# Containerlab generated runtime files
+clab-dci-clos/
+
+# Temporary and backup files
+*.save
+*.bak
+.DS_Store
+
+# Secrets and local environment files
+.env
+.env.*
+!.env.example

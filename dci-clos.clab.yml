@@ -1,0 +1,77 @@
+name: dci-clos
+
+topology:
+  defaults:
+    kind: linux
+
+  nodes:
+    spine1:
+      image: quay.io/frrouting/frr:9.1.0
+      binds:
+        - spine1/frr.conf:/etc/frr/frr.conf
+        - daemons:/etc/frr/daemons
+
+    spine2:
+      image: quay.io/frrouting/frr:9.1.0
+      binds:
+        - spine2/frr.conf:/etc/frr/frr.conf
+        - daemons:/etc/frr/daemons
+
+    spine3:
+      image: quay.io/frrouting/frr:9.1.0
+      binds:
+        - spine3/frr.conf:/etc/frr/frr.conf
+        - daemons:/etc/frr/daemons
+
+    spine4:
+      image: quay.io/frrouting/frr:9.1.0
+      binds:
+        - spine4/frr.conf:/etc/frr/frr.conf
+        - daemons:/etc/frr/daemons
+
+    leaf1:
+      image: quay.io/frrouting/frr:9.1.0
+      binds:
+        - leaf1/frr.conf:/etc/frr/frr.conf
+        - daemons:/etc/frr/daemons
+
+    leaf2:
+      image: quay.io/frrouting/frr:9.1.0
+      binds:
+        - leaf2/frr.conf:/etc/frr/frr.conf
+        - daemons:/etc/frr/daemons
+
+    leaf3:
+      image: quay.io/frrouting/frr:9.1.0
+      binds:
+        - leaf3/frr.conf:/etc/frr/frr.conf
+        - daemons:/etc/frr/daemons
+
+    leaf4:
+      image: quay.io/frrouting/frr:9.1.0
+      binds:
+        - leaf4/frr.conf:/etc/frr/frr.conf
+        - daemons:/etc/frr/daemons
+
+    h1:
+      image: alpine:3.19
+      exec:
+        - ip addr add 192.168.10.1/24 dev eth1
+
+    h2:
+      image: alpine:3.19
+      exec:
+        - ip addr add 192.168.10.2/24 dev eth1
+
+  links:
+    - endpoints: ["leaf1:eth1", "spine1:eth1"]
+    - endpoints: ["leaf1:eth2", "spine2:eth1"]
+    - endpoints: ["leaf2:eth1", "spine1:eth2"]
+    - endpoints: ["leaf2:eth2", "spine2:eth2"]
+    - endpoints: ["leaf3:eth1", "spine3:eth1"]
+    - endpoints: ["leaf3:eth2", "spine4:eth1"]
+    - endpoints: ["leaf4:eth1", "spine3:eth2"]
+    - endpoints: ["leaf4:eth2", "spine4:eth2"]
+    - endpoints: ["leaf2:eth3", "leaf4:eth3"]
+    - endpoints: ["leaf1:eth3", "h1:eth1"]
+    - endpoints: ["leaf3:eth3", "h2:eth1"]
